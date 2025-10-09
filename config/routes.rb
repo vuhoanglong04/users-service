@@ -1,10 +1,28 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users, path: "api/v1/auth", controllers: {
+    sessions: 'api/v1/auth/sessions',
+    registrations: 'api/v1/auth/registrations',
+    passwords: 'api/v1/auth/passwords',
+    confirmations: 'api/v1/auth/confirmations',
+    unlocks: 'api/v1/auth/unlocks',
+    omniauth_callbacks: 'api/v1/auth/omniauth_callbacks'
+  }
+  devise_scope :user do
+    namespace :api do
+      namespace :v1 do
+        namespace :auth do
+          post "refresh", to: "sessions#refresh"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+          post "confirm_email", to: "confirmations#confirm_email"
+          post "resend_confirmation", to: "confirmations#resend_confirmation_instructions"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+          post "reset_password", to: "passwords#create"
+          patch "reset_password", to: "passwords#update_password"
+
+          get "get_google_oauth2_url", to: "omniauth_callbacks#get_google_oauth2_url"
+          get "google_oauth2/callback", to: "omniauth_callbacks#callback"
+        end
+      end
+    end
+  end
 end

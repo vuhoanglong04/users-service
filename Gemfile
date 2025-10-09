@@ -45,3 +45,45 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
+
+gem "paranoia"
+
+gem "devise", "~> 4.9"
+
+gem "devise-jwt"
+
+gem "faker", "~> 3.5"
+
+gem "aws-sdk-s3", "~> 1.194"
+
+gem "prism", "~> 1.4"
+
+gem 'pundit', '~> 2.5'
+
+gem 'dotenv-rails'
+
+gem 'rack-cors', require: 'rack/cors'
+
+gem 'sidekiq'
+
+gem 'sidekiq-cron'
+
+gem 'redis'
+
+gem 'elasticsearch-model'
+
+gem 'elasticsearch-rails'
+
+gem 'omniauth'
+
+gem 'omniauth-google-oauth2'
+
+gem 'omniauth-rails_csrf_protection'
+
+gem 'pg'
+
+gem 'active_model_serializers'
+
+gem 'kaminari'
+
+gem 'ancestry'

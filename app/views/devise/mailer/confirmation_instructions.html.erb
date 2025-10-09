@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Confirm Your Account</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; margin: 0;">
+<table align="center" width="100%" cellpadding="0" cellspacing="0"
+       style="max-width: 600px; background: #ffffff; border-radius: 8px;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  <tr>
+    <td style="padding: 40px; text-align: center;">
+      <h1 style="color: #333333; margin-bottom: 20px;">
+        Welcome, <%= @email %> 🎉
+      </h1>
+      <p style="font-size: 16px; color: #555555; margin-bottom: 30px;">
+        Use the token below to complete your registration:
+      </p>
+      <div style="display: inline-block; background: #f4f4f4; color: #222222;
+        padding: 15px 25px; border-radius: 6px; font-size: 18px;
+        font-weight: bold; letter-spacing: 1px;">
+        <%= @token %>
+      </div>
+      <p style="font-size: 13px; color: #999999; margin-top: 30px;">
+        If you did not create an account, you can safely ignore this email.
+      </p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
