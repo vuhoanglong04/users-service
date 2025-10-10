@@ -39,6 +39,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[8.0]
       t.integer :role, default: "1"
       t.string :provider
       t.text :avatar
+      t.timestamp :deleted_at
       t.timestamps null: false
     end
 

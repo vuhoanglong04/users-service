@@ -35,7 +35,8 @@ class Api::V1::Auth::UnlocksController < Devise::UnlocksController
 
 
   def handle_send_unlock_instructions
-    user = User.find_by!(email: unlock_params[:email])
+    user = User.find_by(email: unlock_params[:email])
+    raise ActiveRecord::RecordNotFound, "User not found" if user.nil?
 
     if !user.locked_at?
       render_response(message: "User account is not locked", status: 400)

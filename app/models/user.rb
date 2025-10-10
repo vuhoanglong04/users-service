@@ -22,5 +22,10 @@ class User < ApplicationRecord
   has_many :posts
   has_many :comments, dependent: :destroy
 
-  # Elasticsearch
+  # Validation
+  validates :email,
+            presence: true,
+            uniqueness: { case_sensitive: true}
+  #Soft Delete
+  acts_as_paranoid
 end

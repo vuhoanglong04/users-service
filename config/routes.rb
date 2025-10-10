@@ -23,6 +23,15 @@ Rails.application.routes.draw do
           post "resend_unlock", to: "unlocks#resend_unlock"
           post "unlock", to: "unlocks#unlock"
         end
+        namespace :admin do
+          resources :users do
+            member do
+              post :restore
+            end
+          end
+          resources :patients
+          resources :doctors
+        end
       end
     end
   end
