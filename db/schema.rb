@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_09_024400) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_10_072906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -38,24 +38,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_024400) do
 
   create_table "doctor_profiles", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.string "gender", default: "male"
     t.string "specialization", null: false
     t.string "license_number", null: false
     t.integer "experience_years", default: 0
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "avatar", default: ""
     t.index ["user_id"], name: "index_doctor_profiles_on_user_id"
   end
 
   create_table "patient_profiles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.date "date_of_birth"
-    t.string "gender", limit: 10
+    t.string "gender", default: "male"
     t.string "address"
     t.string "emergency_contact"
     t.text "medical_history"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "avatar", default: ""
     t.index ["user_id"], name: "index_patient_profiles_on_user_id"
   end
 
@@ -88,6 +91,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_024400) do
     t.integer "role", default: 1
     t.string "provider"
     t.text "avatar"
+    t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

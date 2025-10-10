@@ -10,7 +10,8 @@ class Api::V1::Auth::ConfirmationsController < Devise::ConfirmationsController
 
   # POST /resource/confirm_email
   def confirm_email
-    user = User.find_by!(email: confirmation_params[:email])
+    user = User.find_by(email: confirmation_params[:email])
+    raise ActiveRecord::RecordNotFound, "User not found" if user.nil?
     raise ConfirmedUserError if user.confirmed?
     if confirmation_params[:confirmation_token] != user.confirmation_token
       raise WrongConfirmationTokenError

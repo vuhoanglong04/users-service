@@ -57,7 +57,7 @@ class Api::V1::Auth::SessionsController < Devise::SessionsController
     user_id = RefreshTokenService.verify(session_params[:refresh_token])
     if user_id.present?
       user = User.find_by(id: user_id)
-      raise AuthenticationError, "User not found" if user.nil?
+      raise ActiveRecord::RecordNotFound, "User not found" if user.nil?
       sign_in(resource_name, user)
       render_response(
         data:
