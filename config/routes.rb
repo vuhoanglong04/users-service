@@ -31,6 +31,7 @@ Rails.application.routes.draw do
           end
           resources :patients
           resources :doctors
+          resources :appointments
         end
       end
     end
