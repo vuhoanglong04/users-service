@@ -4,14 +4,22 @@ class SignupForm
   include ActiveModel::Model
   include CustomValidateForm
 
-  attr_accessor :email, :name, :phone_number, :password, :password_confirmation
+  attr_accessor :email,
+                :first_name,
+                :last_name,
+                :phone_number,
+                :password,
+                :password_confirmation
 
   validates :email,
             presence: { message: "Email is required" },
             format: { with: URI::MailTo::EMAIL_REGEXP, message: "Invalid email format" }
 
-  validates :name,
-            presence: { message: "Name is required" }
+  validates :first_name,
+            presence: { message: "First name is required" }
+
+  validates :last_name,
+            presence: { message: "Last name is required" }
 
   validates :phone_number,
             presence: { message: "Phone number is required" }

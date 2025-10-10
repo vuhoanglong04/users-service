@@ -22,9 +22,6 @@ Rails.application.routes.draw do
           post "send_unlock", to: "unlocks#send_unlock"
           post "resend_unlock", to: "unlocks#resend_unlock"
           post "unlock", to: "unlocks#unlock"
-
-          get "get_google_oauth2_url", to: "omniauth_callbacks#get_google_oauth2_url"
-          get "google_oauth2/callback", to: "omniauth_callbacks#callback"
         end
       end
     end

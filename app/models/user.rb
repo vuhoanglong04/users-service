@@ -16,9 +16,11 @@ class User < ApplicationRecord
   # Enum
   enum :role, { admin: 0, user: 1 }
   # Relationships
-  has_one :patient_profile
-  has_one :doctor_profile
+  has_one :patient_profile, dependent: :destroy
+  has_one :doctor_profile, dependent: :destroy
   has_many :appointments
   has_many :posts
-  has_many :comments
+  has_many :comments, dependent: :destroy
+
+  # Elasticsearch
 end

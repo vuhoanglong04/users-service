@@ -20,9 +20,11 @@ puts "👤 Creating users..."
 main_user = User.new(
   email: "longvulinhhoang@gmail.com",
   password: "123456",
-  name: "Long Vũ",
+  first_name: "Long",
+  last_name: "Vu",
   phone_number: Faker::PhoneNumber.cell_phone_in_e164,
-  role: 0
+  role: 0,
+  avatar: Faker::Avatar.image
 )
 main_user.skip_confirmation!
 main_user.save!
@@ -33,9 +35,11 @@ users = [main_user]
   user = User.new(
     email: Faker::Internet.unique.email,
     password: "123456",
-    name: Faker::Name.name,
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
     phone_number: Faker::PhoneNumber.cell_phone_in_e164,
-    role: rand(0..1)
+    role: rand(0..1),
+    avatar: Faker::Avatar.image
   )
   user.skip_confirmation!
   user.save!
