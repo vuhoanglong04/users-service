@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, path: "api/v1/auth", controllers: {
+  devise_for :users, path: "api/v1/auth", skip: [:unlocks], controllers: {
     sessions: 'api/v1/auth/sessions',
     registrations: 'api/v1/auth/registrations',
     passwords: 'api/v1/auth/passwords',
@@ -18,6 +18,10 @@ Rails.application.routes.draw do
 
           post "reset_password", to: "passwords#create"
           patch "reset_password", to: "passwords#update_password"
+
+          post "send_unlock", to: "unlocks#send_unlock"
+          post "resend_unlock", to: "unlocks#resend_unlock"
+          post "unlock", to: "unlocks#unlock"
 
           get "get_google_oauth2_url", to: "omniauth_callbacks#get_google_oauth2_url"
           get "google_oauth2/callback", to: "omniauth_callbacks#callback"
