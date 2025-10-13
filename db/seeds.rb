@@ -146,5 +146,30 @@ posts.each do |post|
 end
 
 puts "✅ Comments created!"
+# Assuming you already have some appointments, doctors, and patients in DB
+puts "Creating fake billings..."
+
+# Get random IDs to link
+appointments = Appointment.pluck(:id)
+doctors = DoctorProfile.pluck(:id)
+patients = PatientProfile.pluck(:id)
+
+statuses = %w[unpaid paid cancelled refunded]
+payment_methods = %w[cash credit_card bank_transfer insurance online]
+
+10.times do
+  Billing.create!(
+    appointment_id: appointments.sample,
+    doctor_id: doctors.sample,
+    patient_id: patients.sample,
+    amount: rand(20..200) * 10.0, # random amount between 200–2000
+    status: statuses.sample,
+    payment_method: payment_methods.sample,
+    created_at: Faker::Time.between(from: 2.months.ago, to: Time.now),
+    updated_at: Time.now
+  )
+end
+
+puts "✅ Done! Created 10 fake billings."
 
 puts "🎉 Done! Seeding completed successfully."
