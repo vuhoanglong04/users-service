@@ -28,11 +28,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_10_084105) do
   create_table "comments", force: :cascade do |t|
     t.bigint "post_id", null: false
     t.bigint "user_id", null: false
-    t.integer "parent_id"
     t.text "content", null: false
+    t.datetime "deleted_at", precision: nil
+    t.string "ancestry"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["ancestry"], name: "index_comments_on_ancestry"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -68,6 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_10_084105) do
     t.string "title", null: false
     t.text "content", null: false
     t.string "image_url"
+    t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -101,7 +103,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_10_084105) do
 
   add_foreign_key "appointments", "doctor_profiles", column: "doctor_id"
   add_foreign_key "appointments", "patient_profiles", column: "patient_id"
-  add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "doctor_profiles", "users"

@@ -5,7 +5,7 @@ class CreatePosts < ActiveRecord::Migration[7.1]
       t.string :title, null: false
       t.text :content, null: false
       t.string :image_url
-
+      t.timestamp :deleted_at
       t.timestamps
     end
   end
