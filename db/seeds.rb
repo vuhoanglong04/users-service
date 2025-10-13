@@ -112,7 +112,7 @@ users.each do |user|
   rand(1..3).times do
     posts << Post.create!(
       user_id: user.id,
-      title: Faker::Book.title,
+      title: Faker::Book.title + rand(1..999).to_s,
       content: Faker::Lorem.paragraph(sentence_count: 5),
       image_url: Faker::LoremFlickr.image(size: "640x480", search_terms: ['health'])
     )
@@ -128,7 +128,7 @@ puts "💬 Creating comments..."
 
 posts.each do |post|
   rand(1..4).times do
-    comment = Comment.create!(
+    parent_comment = Comment.create!(
       post_id: post.id,
       user_id: users.sample.id,
       content: Faker::Lorem.sentence(word_count: 8)
@@ -136,10 +136,9 @@ posts.each do |post|
 
     # nested replies
     rand(0..2).times do
-      Comment.create!(
+      parent_comment.children.create!(
         post_id: post.id,
         user_id: users.sample.id,
-        parent_id: comment.id,
         content: Faker::Lorem.sentence(word_count: 6)
       )
     end

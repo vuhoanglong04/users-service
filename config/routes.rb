@@ -32,6 +32,16 @@ Rails.application.routes.draw do
           resources :patients
           resources :doctors
           resources :appointments
+          resources :posts do
+            member do
+              post :restore
+            end
+          end
+          resource :comments, only: [:destroy] do
+            member do
+              post :restore
+            end
+          end
         end
       end
     end
