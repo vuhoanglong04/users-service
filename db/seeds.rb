@@ -105,21 +105,24 @@ puts "✅ Created 20 appointments"
 # -------------------------------------------------
 # POSTS
 # -------------------------------------------------
-puts "📝 Creating posts..."
+puts "📝 Creating 10,000 posts..."
 
+users = User.pluck(:id)
 posts = []
-users.each do |user|
-  rand(1..3).times do
-    posts << Post.create!(
-      user_id: user.id,
-      title: Faker::Book.title + rand(1..999).to_s,
-      content: Faker::Lorem.paragraph(sentence_count: 5),
-      image_url: Faker::LoremFlickr.image(size: "640x480", search_terms: ['health'])
-    )
-  end
+
+10_000.times do |i|
+  posts << {
+    user_id: rand(1..3),
+    title: "#{Faker::Book.title} #{i + 1}",
+    content: Faker::Lorem.paragraph(sentence_count: 5),
+    image_url: Faker::LoremFlickr.image(size: "640x480", search_terms: ['health'])
+  }
 end
 
-puts "✅ Created #{posts.size} posts"
+# Batch insert (MUCH faster than 10k individual create! calls)
+Post.insert_all(posts)
+
+puts "✅ Created #{posts.size} posts successfully!"
 
 # -------------------------------------------------
 # COMMENTS
@@ -127,22 +130,20 @@ puts "✅ Created #{posts.size} posts"
 puts "💬 Creating comments..."
 
 posts.each do |post|
-  rand(1..4).times do
-    parent_comment = Comment.create!(
-      post_id: post.id,
-      user_id: users.sample.id,
-      content: Faker::Lorem.sentence(word_count: 8)
-    )
+  post_id = rand(1...10)
+  user_id = rand(1...10)
+  parent_comment = Comment.create!(
+    post_id: post_id,
+    user_id: user_id,
+    content: Faker::Lorem.sentence(word_count: 8)
+  )
 
-    # nested replies
-    rand(0..2).times do
-      parent_comment.children.create!(
-        post_id: post.id,
-        user_id: users.sample.id,
-        content: Faker::Lorem.sentence(word_count: 6)
-      )
-    end
-  end
+  # nested replies
+  parent_comment.children.create!(
+    post_id: post_id,
+    user_id: user_id,
+    content: Faker::Lorem.sentence(word_count: 6)
+  )
 end
 
 puts "✅ Comments created!"
