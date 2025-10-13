@@ -42,6 +42,7 @@ Rails.application.routes.draw do
               post :restore
             end
           end
+          resources :billings, only: :index
         end
       end
     end
