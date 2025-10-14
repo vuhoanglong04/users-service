@@ -34,13 +34,7 @@ class User < ApplicationRecord
 
   # Elasticsearch
   settings index: {
-    number_of_shards: 2,
-    analysis: {
-      my_vietnamese_analyzer: {
-        tokenizer: "standard",
-        filter: %w[lowercase asciifolding]
-      }
-    }
+    number_of_shards: 2
   } do
     mapping dynamic: false do
       indexes :email, type: :text, analyzer: :standard do

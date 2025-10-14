@@ -11,23 +11,13 @@ class Post < ApplicationRecord
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
   settings index: {
-    number_of_shards: 2,
-    analysis: {
-      analyzer: {
-        my_vietnamese_analyzer: {
-          tokenizer: "standard",
-          filter: %w[lowercase asciifolding]
-        }
-      }
-    }
+    number_of_shards: 2
   } do
     mappings dynamic: false do
       indexes :title, type: :text, analyzer: :standard do
         indexes :keyword, type: :keyword
       end
-      indexes :content, type: :text, analyzer: :standard do
-        indexes :keyword, type: :keyword
-      end
+      indexes :content, type: :text, analyzer: :standard
       indexes :user_id, type: :integer
       indexes :updated_at, type: :date
       indexes :created_at, type: :date

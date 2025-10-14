@@ -1,15 +1,51 @@
 class Api::V1::Admin::PatientsController < Api::V1::Admin::BaseAdminController
   def index
-    page = params[:page] ||= 1
-    patients = PatientProfile.page(page).per(5)
-    render_response(
-      data: {
-        patients: ActiveModelSerializers::SerializableResource.new(patients, each_serializer: Admin::PatientSerializer)
-      },
-      message: "Get all patients successfully",
-      status: 200,
-      meta: pagination_meta(patients)
-    )
+    page = params[:page].to_i >= 1 ? params[:page].to_i : 1
+    per_page = 5
+    query = params[:query].to_s.strip
+
+    cache_key = [
+      "patient_profiles_page=#{page}",
+      "per_page=#{per_page}",
+      "query=#{query}",
+    ].compact.join("&")
+
+    Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      results = PatientProfile.search(
+        {
+          from: (page - 1) * per_page,
+          size: per_page,
+          query: query.present? ?
+                   {
+                     bool: {
+                       should: [
+                         { multi_match: { query: query, fields: %w[gender address emergency_contact medical_history] } }
+                       ]
+                     }
+                   } :
+                   { match_all: {} }
+        }
+      )
+
+      meta = es_pagination_meta(results.response, page, per_page)
+
+      serialized_patients = ActiveModelSerializers::SerializableResource.new(
+        results.records,
+        each_serializer: Admin::PatientSerializer
+      ).as_json
+
+      {
+        data: { patients: serialized_patients },
+        meta: meta
+      }
+    end.then do |cached_response|
+      render_response(
+        data: cached_response[:data],
+        message: "Get all patients successfully",
+        status: 200,
+        meta: cached_response[:meta]
+      )
+    end
   end
 
   def create

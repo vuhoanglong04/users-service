@@ -1,15 +1,56 @@
 class Api::V1::Admin::DoctorsController < Api::V1::Admin::BaseAdminController
   def index
-    page = params[:page] ||= 1
-    doctors = DoctorProfile.page(page).per(5)
-    render_response(
-      data: {
-        doctors: ActiveModelSerializers::SerializableResource.new(doctors, each_serializer: Admin::DoctorSerializer)
-      },
-      message: "Get all doctors successfully",
-      status: 200,
-      meta: pagination_meta(doctors)
-    )
+    page = params[:page].to_i >= 1 ? params[:page].to_i : 1
+    per_page = 5
+    query = params[:query].to_s.strip
+
+    cache_key = [
+      "doctor_profiles_page=#{page}",
+      "per_page=#{per_page}",
+      "query=#{query}",
+    ].compact.join("&")
+
+    Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      results = DoctorProfile.search(
+        {
+          from: (page - 1) * per_page,
+          size: per_page,
+          query: query.present? ?
+                   {
+                     bool: {
+                       should: [
+                         { term: { "license_number.keyword": query.downcase } },
+                         { match: { license_number: query } },
+                         { term: { "specialization.keyword": query.downcase } },
+                         { match: { specialization: query } },
+                         { match: { bio: query } },
+                         { match: { gender: query } }
+                       ]
+                     }
+                   } :
+                   { match_all: {} }
+        }
+      )
+
+      meta = es_pagination_meta(results.response, page, per_page)
+
+      serialized_doctors = ActiveModelSerializers::SerializableResource.new(
+        results.records,
+        each_serializer: Admin::DoctorSerializer
+      ).as_json
+
+      {
+        data: { doctors: serialized_doctors },
+        meta: meta
+      }
+    end.then do |cached_response|
+      render_response(
+        data: cached_response[:data],
+        message: "Get all doctors successfully",
+        status: 200,
+        meta: cached_response[:meta]
+      )
+    end
   end
 
   def create

@@ -7,9 +7,9 @@ class Appointment < ApplicationRecord
     cancelled: 'cancelled',
     completed: 'completed'
   }
-  belongs_to :doctor_profile, class_name: 'DoctorProfile', foreign_key: 'doctor_id'
-  belongs_to :patient_profile, class_name: 'PatientProfile', foreign_key: 'patient_id'
-
+  belongs_to :doctor_profile, foreign_key: 'doctor_id'
+  belongs_to :patient_profile, foreign_key: 'patient_id'
+  has_one :billing
   validate :doctor_or_patient_has_conflict
 
   private
