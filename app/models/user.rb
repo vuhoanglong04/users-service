@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  include RemoveCacheAfterCommitting
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,
@@ -25,7 +28,41 @@ class User < ApplicationRecord
   # Validation
   validates :email,
             presence: true,
-            uniqueness: { case_sensitive: true}
-  #Soft Delete
+            uniqueness: { case_sensitive: true }
+  # Soft Delete
   acts_as_paranoid
+
+  # Elasticsearch
+  settings index: {
+    number_of_shards: 2
+  } do
+    mapping dynamic: false do
+      indexes :email, type: :text, analyzer: :standard do
+        indexes :keyword, type: :keyword
+      end
+      indexes :first_name, type: :text, analyzer: :standard
+      indexes :last_name, type: :text, analyzer: :standard
+      indexes :phone_number, type: :text, analyzer: :standard
+      indexes :updated_at, type: :date
+      indexes :created_at, type: :date
+    end
+  end
+
+  private
+
+  def as_indexed_json(options = {})
+    {
+      id: id,
+      email: email,
+      first_name: first_name,
+      last_name: last_name,
+      phone_number: phone_number,
+      avatar: avatar,
+      provider: provider,
+      role: role,
+      deleted_at: deleted_at,
+      updated_at: updated_at,
+      created_at: created_at
+    }
+  end
 end
