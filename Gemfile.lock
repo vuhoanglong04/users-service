@@ -132,6 +132,8 @@ GEM
     devise-jwt (0.12.1)
       devise (~> 4.0)
       warden-jwt_auth (~> 0.10)
+    digest-crc (0.7.0)
+      rake (>= 12.0.0, < 14.0.0)
     dotenv (3.1.8)
     dotenv-rails (3.1.8)
       dotenv (= 3.1.8)
@@ -406,6 +408,8 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
+    ruby-kafka (1.5.0)
+      digest-crc
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     sidekiq (8.0.8)
@@ -523,6 +527,7 @@ DEPENDENCIES
   rails (~> 8.0.2, >= 8.0.2.1)
   redis
   rubocop-rails-omakase
+  ruby-kafka
   sidekiq
   sidekiq-cron
   solid_cable

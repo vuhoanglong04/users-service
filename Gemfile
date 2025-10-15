@@ -87,3 +87,5 @@ gem 'active_model_serializers'
 gem 'kaminari'
 
 gem 'ancestry'
+
+gem 'ruby-kafka'
