@@ -110,7 +110,7 @@ puts "📝 Creating 10,000 posts..."
 users = User.pluck(:id)
 posts = []
 
-10_000.times do |i|
+5000.times do |i|
   posts << {
     user_id: rand(1..3),
     title: "#{Faker::Book.title} #{i + 1}",
@@ -173,3 +173,9 @@ end
 puts "✅ Done! Created 10 fake billings."
 
 puts "🎉 Done! Seeding completed successfully."
+Post.import(force: true)
+User.import(force: true)
+DoctorProfile.import(force: true)
+PatientProfile.import(force: true)
+Billing.import(force: true)
+puts "DONE IMPORT DATA TO ELASTICSEARCH"
