@@ -84,98 +84,99 @@ patient_profiles = patients.map do |user|
 end
 
 puts "✅ Created #{patient_profiles.size} patient profiles"
-
-# -------------------------------------------------
-# APPOINTMENTS
-# -------------------------------------------------
-puts "📅 Creating appointments..."
-
-20.times do
-  Appointment.create!(
-    doctor_id: doctor_profiles.sample.id,
-    patient_id: patient_profiles.sample.id,
-    appointment_date: Faker::Time.forward(days: rand(1..30), period: :morning),
-    status: %w[pending confirmed cancelled completed].sample,
-    notes: Faker::Lorem.sentence(word_count: 10)
-  )
-end
-
-puts "✅ Created 20 appointments"
-
-# -------------------------------------------------
-# POSTS
-# -------------------------------------------------
-puts "📝 Creating 10,000 posts..."
-
-users = User.pluck(:id)
-posts = []
-
-5000.times do |i|
-  posts << {
-    user_id: rand(1..3),
-    title: "#{Faker::Book.title} #{i + 1}",
-    content: Faker::Lorem.paragraph(sentence_count: 5),
-    image_url: Faker::LoremFlickr.image(size: "640x480", search_terms: ['health'])
-  }
-end
-
-# Batch insert (MUCH faster than 10k individual create! calls)
-Post.insert_all(posts)
-
-puts "✅ Created #{posts.size} posts successfully!"
-
-# -------------------------------------------------
-# COMMENTS
-# -------------------------------------------------
-puts "💬 Creating comments..."
-
-posts.each do |post|
-  post_id = rand(1...10)
-  user_id = rand(1...10)
-  parent_comment = Comment.create!(
-    post_id: post_id,
-    user_id: user_id,
-    content: Faker::Lorem.sentence(word_count: 8)
-  )
-
-  # nested replies
-  parent_comment.children.create!(
-    post_id: post_id,
-    user_id: user_id,
-    content: Faker::Lorem.sentence(word_count: 6)
-  )
-end
-
-puts "✅ Comments created!"
-# Assuming you already have some appointments, doctors, and patients in DB
-puts "Creating fake billings..."
-
-# Get random IDs to link
-appointments = Appointment.pluck(:id)
-doctors = DoctorProfile.pluck(:id)
-patients = PatientProfile.pluck(:id)
-
-statuses = %w[unpaid paid cancelled refunded]
-payment_methods = %w[cash credit_card bank_transfer insurance online]
-
-10.times do
-  Billing.create!(
-    appointment_id: appointments.sample,
-    patient_id: patients.sample,
-    amount: rand(20..200) * 10.0, # random amount between 200–2000
-    status: statuses.sample,
-    payment_method: payment_methods.sample,
-    created_at: Faker::Time.between(from: 2.months.ago, to: Time.now),
-    updated_at: Time.now
-  )
-end
-
-puts "✅ Done! Created 10 fake billings."
-
-puts "🎉 Done! Seeding completed successfully."
-Post.import(force: true)
 User.import(force: true)
-DoctorProfile.import(force: true)
-PatientProfile.import(force: true)
-Billing.import(force: true)
-puts "DONE IMPORT DATA TO ELASTICSEARCH"
+puts "Dont Import to Elasticsearch"
+#
+# # -------------------------------------------------
+# # APPOINTMENTS
+# # -------------------------------------------------
+# puts "📅 Creating appointments..."
+#
+# 20.times do
+#   Appointment.create!(
+#     doctor_id: doctor_profiles.sample.id,
+#     patient_id: patient_profiles.sample.id,
+#     appointment_date: Faker::Time.forward(days: rand(1..30), period: :morning),
+#     status: %w[pending confirmed cancelled completed].sample,
+#     notes: Faker::Lorem.sentence(word_count: 10)
+#   )
+# end
+#
+# puts "✅ Created 20 appointments"
+#
+# # -------------------------------------------------
+# # POSTS
+# # -------------------------------------------------
+# puts "📝 Creating 10,000 posts..."
+#
+# users = User.pluck(:id)
+# posts = []
+#
+# 5000.times do |i|
+#   posts << {
+#     user_id: rand(1..3),
+#     title: "#{Faker::Book.title} #{i + 1}",
+#     content: Faker::Lorem.paragraph(sentence_count: 5),
+#     image_url: Faker::LoremFlickr.image(size: "640x480", search_terms: ['health'])
+#   }
+# end
+#
+# # Batch insert (MUCH faster than 10k individual create! calls)
+# Post.insert_all(posts)
+#
+# puts "✅ Created #{posts.size} posts successfully!"
+#
+# # -------------------------------------------------
+# # COMMENTS
+# # -------------------------------------------------
+# puts "💬 Creating comments..."
+#
+# posts.each do |post|
+#   post_id = rand(1...10)
+#   user_id = rand(1...10)
+#   parent_comment = Comment.create!(
+#     post_id: post_id,
+#     user_id: user_id,
+#     content: Faker::Lorem.sentence(word_count: 8)
+#   )
+#
+#   # nested replies
+#   parent_comment.children.create!(
+#     post_id: post_id,
+#     user_id: user_id,
+#     content: Faker::Lorem.sentence(word_count: 6)
+#   )
+# end
+#
+# puts "✅ Comments created!"
+# # Assuming you already have some appointments, doctors, and patients in DB
+# puts "Creating fake billings..."
+#
+# # Get random IDs to link
+# appointments = Appointment.pluck(:id)
+# doctors = DoctorProfile.pluck(:id)
+# patients = PatientProfile.pluck(:id)
+#
+# statuses = %w[unpaid paid cancelled refunded]
+# payment_methods = %w[cash credit_card bank_transfer insurance online]
+#
+# 10.times do
+#   Billing.create!(
+#     appointment_id: appointments.sample,
+#     patient_id: patients.sample,
+#     amount: rand(20..200) * 10.0, # random amount between 200–2000
+#     status: statuses.sample,
+#     payment_method: payment_methods.sample,
+#     created_at: Faker::Time.between(from: 2.months.ago, to: Time.now),
+#     updated_at: Time.now
+#   )
+# end
+#
+# puts "✅ Done! Created 10 fake billings."
+#
+# puts "🎉 Done! Seeding completed successfully."
+# Post.import(force: true)
+# DoctorProfile.import(force: true)
+# PatientProfile.import(force: true)
+# Billing.import(force: true)
+# puts "DONE IMPORT DATA TO ELASTICSEARCH"

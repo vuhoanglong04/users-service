@@ -31,18 +31,11 @@ Rails.application.routes.draw do
           end
           resources :patients
           resources :doctors
-          resources :appointments
           resources :posts do
             member do
               post :restore
             end
           end
-          resource :comments, only: [:destroy] do
-            member do
-              post :restore
-            end
-          end
-          resources :billings, only: :index
         end
       end
     end
