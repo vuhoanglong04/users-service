@@ -56,7 +56,7 @@ gem "faker", "~> 3.5"
 
 gem "aws-sdk-s3", "~> 1.194"
 
-gem "prism", "~> 1.4"
+gem "prism", "~> 1.6"
 
 gem "pundit", "~> 2.5"
 
