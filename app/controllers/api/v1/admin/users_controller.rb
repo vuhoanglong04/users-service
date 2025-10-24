@@ -52,6 +52,38 @@ class Api::V1::Admin::UsersController < Api::V1::Admin::BaseAdminController
     end
   end
 
+  def show
+    user = User.find_by(id: params[:id])
+    raise ActiveRecord::RecordNotFound, "User not found" if user.nil?
+    client = AppointmentsClient.new
+    response = client.get_appointments_by_patient_id(user.patient_profile.id)
+    begin
+      appointments = response.appointments.map do |appt|
+        {
+          id: appt.id,
+          doctor_id: appt.doctor_id,
+          patient_id: appt.patient_id,
+          appointment_date: appt.appointment_date,
+          status: appt.status,
+          appointment_snapshot: appt.appointment_snapshot,
+          updated_at: appt.updated_at,
+          created_at: appt.created_at
+        }
+      end
+    rescue GRPC::BadStatus => e
+      Rails.logger.error("gRPC error: #{e.details}")
+      appointments = []
+    end
+    render_response(
+      data: {
+        user: ActiveModelSerializers::SerializableResource.new(user, serializer: Admin::UserSerializer),
+        appointments: appointments
+      },
+      message: "Get user successfully",
+      status: 200
+    )
+  end
+
   def create
     CreateUserForm.new(user_params)
     avatar = S3UploadService.upload(user_params[:avatar], "users")

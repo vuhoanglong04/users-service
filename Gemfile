@@ -58,34 +58,38 @@ gem "aws-sdk-s3", "~> 1.194"
 
 gem "prism", "~> 1.4"
 
-gem 'pundit', '~> 2.5'
+gem "pundit", "~> 2.5"
 
-gem 'dotenv-rails'
+gem "dotenv-rails"
 
-gem 'rack-cors', require: 'rack/cors'
+gem "rack-cors", require: "rack/cors"
 
-gem 'sidekiq'
+gem "sidekiq"
 
-gem 'sidekiq-cron'
+gem "sidekiq-cron"
 
-gem 'redis'
+gem "redis"
 
-gem 'elasticsearch-model'
+gem "elasticsearch-model"
 
-gem 'elasticsearch-rails'
+gem "elasticsearch-rails"
 
-gem 'omniauth'
+gem "omniauth"
 
-gem 'omniauth-google-oauth2'
+gem "omniauth-google-oauth2"
 
-gem 'omniauth-rails_csrf_protection'
+gem "omniauth-rails_csrf_protection"
 
-gem 'pg'
+gem "pg"
 
-gem 'active_model_serializers'
+gem "active_model_serializers"
 
-gem 'kaminari'
+gem "kaminari"
 
-gem 'ancestry'
+gem "ancestry"
 
-gem 'ruby-kafka'
+gem "ruby-kafka"
+
+gem "grpc"
+
+gem "google-protobuf"

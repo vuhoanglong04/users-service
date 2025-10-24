@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="health_development@localhost" uuid="208ab8db-f3c6-450f-a826-2b028713f8e6">
+    <data-source source="LOCAL" name="users_service@localhost" uuid="130b236a-6616-415e-8212-d67ceb702de8">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/health_development</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/users_service</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

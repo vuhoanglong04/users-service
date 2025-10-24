@@ -30,7 +30,7 @@
 /tmp/storage/*
 !/tmp/storage/.keep
 
-# Ignore CI service files.
+# Ignore CI services files.
 /.github
 
 # Ignore Kamal files.

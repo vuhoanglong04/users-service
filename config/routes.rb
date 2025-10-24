@@ -31,11 +31,6 @@ Rails.application.routes.draw do
           end
           resources :patients
           resources :doctors
-          resources :posts do
-            member do
-              post :restore
-            end
-          end
         end
       end
     end

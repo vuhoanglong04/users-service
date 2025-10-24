@@ -21,10 +21,6 @@ class User < ApplicationRecord
   # Relationships
   has_one :patient_profile, dependent: :destroy
   has_one :doctor_profile, dependent: :destroy
-  has_many :appointments
-  has_many :posts
-  has_many :comments, dependent: :destroy
-
   # Validation
   validates :email,
             presence: true,
